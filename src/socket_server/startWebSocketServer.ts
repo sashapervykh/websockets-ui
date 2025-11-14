@@ -1,5 +1,5 @@
-import { error } from "console";
-import ws, { WebSocketServer } from "ws";
+import { WebSocketServer } from "ws";
+import { handleMessage } from "./handleMessage/handleMessage.js";
 
 export function startWebSocketServer() {
   const wss = new WebSocketServer({ port: 3000 }, () => {
@@ -12,17 +12,7 @@ export function startWebSocketServer() {
     ws.on("message", function message(data) {
       const message = JSON.parse(data.toString());
       console.log(message);
-      const newMessage = {
-        type: "reg",
-        data: JSON.stringify({
-          name: "Alex",
-          index: "11",
-          error: true,
-          errorText: "Error when logging",
-        }),
-        id: 0,
-      };
-      ws.send(JSON.stringify(newMessage));
+      handleMessage(message, ws);
     });
   });
 }

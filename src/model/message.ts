@@ -1,10 +1,9 @@
-interface IncRegMessage {
-  type: "reg";
-  data: { name: string; password: string };
-  id: number;
+export interface MessageWithCheckedType {
+  type: string;
+  [key: string]: unknown;
 }
 
-interface IncRegMessage {
+export interface IncRegMessage {
   type: "reg";
   data: { name: string; password: string };
   id: number;
