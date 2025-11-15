@@ -1,11 +1,9 @@
 import type WebSocket from "ws";
 import type { MessageWithCheckedType } from "../../model/message.js";
 import { database } from "../../db/database.js";
-import { sendUpdateRoomMessage } from "../../utils/sendMessage/sendUpdateRoomMessage.js";
 import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
 import { getTypedAddShipsMessage } from "../../utils/getTypedMessage/getTypedAddShipsMessage.js";
-import { stringify } from "querystring";
 
 export function handleAddShipsMessage(
   message: MessageWithCheckedType,
