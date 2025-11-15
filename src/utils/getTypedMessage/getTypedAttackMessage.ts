@@ -44,7 +44,8 @@ export function getTypedAttackMessage(message: MessageWithCheckedType) {
     type: message.type,
     data: {
       gameId: data.gameId,
-      ships: data.ships,
+      x: data.x,
+      y: data.y,
       indexPlayer: data.indexPlayer,
     },
     id: message.id,

@@ -20,13 +20,13 @@ interface RoomData {
   roomUsers: StoredUserData[];
 }
 
-type GameUserData = StoredUserData & { shipReceived: ShipMessage } & {
-  shipStored: {
+type GameUserData = StoredUserData & { shipsReceived: ShipMessage[] } & {
+  shipsStored: {
     cells: Map<number, number[]>;
     length: number;
     shot: number;
     killed: boolean;
-  };
+  }[];
 };
 
 class Database {
