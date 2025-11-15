@@ -1,6 +1,6 @@
 import type WebSocket from "ws";
 
-export function sendRegMessage({
+export function sendMessage({
   type,
   data,
   ws,

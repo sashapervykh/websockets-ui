@@ -1,5 +1,6 @@
 import { MESSAGE_TYPE } from "../../constants/constants.js";
 import { checkMessageType } from "../../utils/checkMessageType.js";
+import { handleCreateRoomMessage } from "./handleCreateRoomMessage.js";
 import { handleRegMessage } from "./handleRegMessage.js";
 import type WebSocket from "ws";
 
@@ -13,7 +14,7 @@ export function handleMessage(message: unknown, ws: WebSocket) {
       break;
     }
     case MESSAGE_TYPE.create_room: {
-      handleRegMessage(typedMessage, ws);
+      handleCreateRoomMessage(ws);
       break;
     }
     default: {

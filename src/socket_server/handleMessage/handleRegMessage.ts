@@ -2,7 +2,7 @@ import type { MessageWithCheckedType } from "../../model/message.js";
 import { getTypedRegMessage } from "../../utils/getTypedRegMessage.js";
 import { database } from "../../db/database.js";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
-import { sendRegMessage } from "../../utils/sendRegMessage.js";
+import { sendMessage } from "../../utils/sendMessage.js";
 import type WebSocket from "ws";
 
 export function handleRegMessage(
@@ -17,10 +17,10 @@ export function handleRegMessage(
       index: storedUser.index,
       error: false,
     };
-    sendRegMessage({ type: MESSAGE_TYPE.reg, data, ws });
+    sendMessage({ type: MESSAGE_TYPE.reg, data, ws });
   } catch (err) {
     if (err instanceof Error) {
-      sendRegMessage({
+      sendMessage({
         type: MESSAGE_TYPE.reg,
         data: { error: true, errorText: err.message },
         ws,
