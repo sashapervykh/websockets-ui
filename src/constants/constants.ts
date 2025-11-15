@@ -8,4 +8,5 @@ export const MESSAGE_TYPE = {
   add_ships: "add_ships",
   start_game: "start_game",
   turn: "turn",
+  attack: "attack",
 };

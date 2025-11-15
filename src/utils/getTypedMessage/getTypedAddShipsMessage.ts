@@ -37,11 +37,13 @@ export function getTypedAddShipsMessage(message: MessageWithCheckedType) {
     throw new Error("Id property has the wrong type!");
   }
 
+  const ships = getTypedShips(data["ships"]);
+
   return {
     type: message.type,
     data: {
       gameId: data.gameId,
-      ships: data.ships,
+      ships: ships,
       indexPlayer: data.indexPlayer,
     },
     id: message.id,
@@ -49,17 +51,14 @@ export function getTypedAddShipsMessage(message: MessageWithCheckedType) {
 }
 
 function getTypedShips(ships: unknown) {
-  if (typeof ships !== "string") {
-    throw new Error(`Received ships is not string!`);
-  }
-  const shipsObj: unknown = JSON.parse(ships);
-  if (typeof shipsObj !== "object" || !shipsObj) {
+  if (typeof ships !== "object" || !ships) {
     throw new Error(`Ships are not valid JSON!`);
   }
-  if (!Array.isArray(shipsObj)) {
+  if (!Array.isArray(ships)) {
     throw new Error(`Ships are not an array!`);
   }
-  const res = [];
+  const res = ships.map((elem) => getTypedShip(elem));
+  return res;
 }
 
 function getTypedShip(ship: unknown) {
@@ -68,7 +67,7 @@ function getTypedShip(ship: unknown) {
   }
   if (!("direction" in ship && typeof ship["direction"] === "boolean"))
     throw new Error("Direction property of some ships is not boolean");
-  if (!("length" in ship && typeof ship["direction"] === "number"))
+  if (!("length" in ship && typeof ship["length"] === "number"))
     throw new Error("Length property of some ships is not a number");
   if (!("type" in ship && typeof ship["type"] === "string"))
     throw new Error("Type property of some ships is not string");

@@ -22,14 +22,11 @@ export function handleAddShipsMessage(
         data: { ships, currentPlayerIndex: gameUser.index },
         ws: gameUser.ws,
       });
-      console.log(nextUser);
     }
     for (const gameUser of gameUsers) {
-      console.log(gameUser);
-
       sendMessage({
         type: MESSAGE_TYPE.turn,
-        data: { currentPlayer: 1 },
+        data: { currentPlayer: gameUsers[nextUser].index },
         ws: gameUser.ws,
       });
     }
