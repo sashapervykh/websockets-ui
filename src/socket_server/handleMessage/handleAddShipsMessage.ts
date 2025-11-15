@@ -11,6 +11,7 @@ export function handleAddShipsMessage(
 ) {
   const { gameId, ships } = getTypedAddShipsMessage(message).data;
   const user = database.getUser(ws);
+  if (!user) return;
   database.addUserToGame(user, ships, gameId);
   const gameUsers = database.getGame(gameId);
   if (!gameUsers) return;
@@ -19,7 +20,10 @@ export function handleAddShipsMessage(
     for (const gameUser of gameUsers) {
       sendMessage({
         type: MESSAGE_TYPE.start_game,
-        data: { ships, currentPlayerIndex: gameUser.index },
+        data: {
+          ships: gameUser.shipReceived,
+          currentPlayerIndex: gameUser.index,
+        },
         ws: gameUser.ws,
       });
     }

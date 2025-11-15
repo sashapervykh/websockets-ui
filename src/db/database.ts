@@ -1,4 +1,6 @@
 import type WebSocket from "ws";
+import type { ShipMessage } from "../model/message.js";
+import { createDbShipData } from "../utils/createDbShipData.js";
 
 interface UserData {
   name: string;
@@ -18,10 +20,19 @@ interface RoomData {
   roomUsers: StoredUserData[];
 }
 
+type GameUserData = StoredUserData & { shipReceived: ShipMessage } & {
+  shipStored: {
+    cells: Map<number, number[]>;
+    length: number;
+    shot: number;
+    killed: boolean;
+  };
+};
+
 class Database {
   users = new Map<WebSocket, StoredUserData>();
   rooms = new Map<number, RoomData>();
-  games = new Map<number, unknown[]>();
+  games = new Map<number, GameUserData[]>();
   userIndex = 0;
   roomsIndex = 0;
   gameIndex = 0;
@@ -38,10 +49,11 @@ class Database {
     return storedUser;
   }
 
-  addUserToGame(user: StoredUserData, ships: string, idGame: number) {
+  addUserToGame(user: StoredUserData, ships: ShipMessage[], idGame: number) {
     const game = this.games.get(idGame);
     if (!game) return;
-    game.push({ ...user, ships: ships });
+    const shipsStored = createDbShipData(ships);
+    game.push({ ...user, shipsReceived: ships, shipsStored: shipsStored });
   }
 
   addUserToRoom(user: StoredUserData, indexRoom: number) {

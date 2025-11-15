@@ -8,3 +8,10 @@ export interface IncRegMessage {
   data: { name: string; password: string };
   id: number;
 }
+
+export interface ShipMessage {
+  position: { x: number; y: number };
+  direction: boolean;
+  type: string;
+  length: number;
+}
