@@ -15,3 +15,10 @@ export interface ShipMessage {
   type: string;
   length: number;
 }
+
+export interface ShipStored {
+  cells: Map<number, number[]>;
+  length: number;
+  shot: number;
+  killed: boolean;
+}

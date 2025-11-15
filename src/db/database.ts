@@ -1,5 +1,5 @@
 import type WebSocket from "ws";
-import type { ShipMessage } from "../model/message.js";
+import type { ShipMessage, ShipStored } from "../model/message.js";
 import { createDbShipData } from "../utils/createDbShipData.js";
 
 interface UserData {
@@ -21,12 +21,7 @@ interface RoomData {
 }
 
 type GameUserData = StoredUserData & { shipsReceived: ShipMessage[] } & {
-  shipsStored: {
-    cells: Map<number, number[]>;
-    length: number;
-    shot: number;
-    killed: boolean;
-  }[];
+  shipsStored: ShipStored[];
 };
 
 class Database {
