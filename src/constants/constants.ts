@@ -4,4 +4,5 @@ export const MESSAGE_TYPE = {
   update_room: "update_room",
   add_user_to_room: "add_user_to_room",
   update_winners: "update_winners",
+  create_game: "create_game",
 };

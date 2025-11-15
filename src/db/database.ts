@@ -11,12 +11,11 @@ interface StoredUserData {
   ws: WebSocket;
 }
 
-type RoomsUserData = Omit<StoredUserData, "wins" | "ws">;
 type WinsUserData = Omit<StoredUserData, "index" | "ws">;
 
 interface RoomData {
   roomId: number;
-  roomUsers: RoomsUserData[];
+  roomUsers: StoredUserData[];
 }
 
 class Database {
@@ -40,13 +39,13 @@ class Database {
   addUserToRoom(user: StoredUserData, indexRoom: number) {
     const room = this.rooms.get(indexRoom);
     if (!room) return;
-    room.roomUsers.push({ name: user.name, index: user.index });
+    room.roomUsers.push(user);
   }
 
   createRoom(user: StoredUserData) {
     this.rooms.set(this.roomsIndex, {
       roomId: this.roomsIndex,
-      roomUsers: [{ name: user.name, index: user.index }],
+      roomUsers: [user],
     });
     this.roomsIndex++;
   }
@@ -60,9 +59,20 @@ class Database {
   }
 
   getRooms() {
-    return Array.from(this.rooms.values()).filter(
-      (elem) => elem.roomUsers.length < 2
-    );
+    return Array.from(this.rooms.values())
+      .filter((elem) => elem.roomUsers.length < 2)
+      .map((elem) => ({
+        roomId: elem.roomId,
+        roomUsers: elem.roomUsers.map((elem) => ({
+          name: elem.name,
+          index: elem.index,
+        })),
+      }));
+  }
+
+  getRoomUsers(indexRoom: number) {
+    const roomUsers = this.rooms.get(indexRoom)?.roomUsers;
+    return roomUsers;
   }
 
   getWinners() {
