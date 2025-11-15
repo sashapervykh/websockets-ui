@@ -1,6 +1,6 @@
 import type WebSocket from "ws";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
-import { sendMessage } from "../../utils/sendMessage.js";
+import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
 
 export function handleAddUserMessage(ws: WebSocket) {
   sendMessage({

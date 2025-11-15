@@ -1,5 +1,5 @@
 import type WebSocket from "ws";
-import { sendMessage } from "../../utils/sendMessage.js";
+import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
 
 export function handleCreateRoomMessage(ws: WebSocket) {
