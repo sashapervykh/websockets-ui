@@ -7,4 +7,5 @@ export const MESSAGE_TYPE = {
   create_game: "create_game",
   add_ships: "add_ships",
   start_game: "start_game",
+  turn: "turn",
 };

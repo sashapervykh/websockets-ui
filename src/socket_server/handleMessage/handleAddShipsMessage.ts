@@ -17,10 +17,21 @@ export function handleAddShipsMessage(
   const gameUsers = database.getGame(gameId);
   if (!gameUsers) return;
   if (gameUsers.length === 2) {
+    const nextUser = Math.floor(Math.random() * 2);
     for (const gameUser of gameUsers) {
       sendMessage({
         type: MESSAGE_TYPE.start_game,
-        data: JSON.stringify({ ships, currentPlayerIndex: gameUser.index }),
+        data: { ships, currentPlayerIndex: gameUser.index },
+        ws: gameUser.ws,
+      });
+      console.log(nextUser);
+    }
+    for (const gameUser of gameUsers) {
+      console.log(gameUser);
+
+      sendMessage({
+        type: MESSAGE_TYPE.turn,
+        data: { currentPlayer: 1 },
         ws: gameUser.ws,
       });
     }
