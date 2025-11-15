@@ -37,11 +37,18 @@ class Database {
     return storedUser;
   }
 
+  addUserToRoom(user: StoredUserData, indexRoom: number) {
+    const room = this.rooms.get(indexRoom);
+    if (!room) return;
+    room.roomUsers.push({ name: user.name, index: user.index });
+  }
+
   createRoom(user: StoredUserData) {
     this.rooms.set(this.roomsIndex, {
       roomId: this.roomsIndex,
       roomUsers: [{ name: user.name, index: user.index }],
     });
+    this.roomsIndex++;
   }
 
   getUser(ws: WebSocket) {

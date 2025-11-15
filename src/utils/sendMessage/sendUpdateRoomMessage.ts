@@ -5,6 +5,7 @@ import { sendMessage } from "./sendMessage.js";
 export function sendUpdateRoomMessage() {
   const users = database.getUsers();
   const roomsData = database.getRooms();
+
   for (const user of users) {
     const userData = user[1];
     sendMessage({

@@ -1,20 +1,21 @@
 import type WebSocket from "ws";
-import { MESSAGE_TYPE } from "../../constants/constants.js";
-import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
+import type { MessageWithCheckedType } from "../../model/message.js";
+import { getTypedAddUserMessage } from "../../utils/getTypedAddUserMessage.js";
+import { database } from "../../db/database.js";
+import { sendUpdateRoomMessage } from "../../utils/sendMessage/sendUpdateRoomMessage.js";
 
-export function handleAddUserMessage(ws: WebSocket) {
-  sendMessage({
-    type: MESSAGE_TYPE.add_user_to_room,
-    data: {
-      roomId: 1,
-      roomUsers: [
-        {
-          indexRoom: 1,
-          index: 0,
-        },
-      ],
-    },
+export function handleAddUserMessage(
+  message: MessageWithCheckedType,
+  ws: WebSocket
+) {
+  try {
+    const indexRoom = getTypedAddUserMessage(message).data.indexRoom;
+    const user = database.getUser(ws);
+    if (!user) return;
+    database.addUserToRoom(user, indexRoom);
 
-    ws,
-  });
+    sendUpdateRoomMessage();
+  } catch (err) {
+    console.error(err);
+  }
 }
