@@ -20,9 +20,10 @@ interface RoomData {
 }
 
 class Database {
-  users = new Map<number, StoredUserData>();
+  users = new Map<WebSocket, StoredUserData>();
   rooms = new Map<number, RoomData>();
   userIndex = 0;
+  roomsIndex = 0;
 
   addUser(user: UserData, ws: WebSocket) {
     const storedUser = {
@@ -31,9 +32,20 @@ class Database {
       wins: 0,
       ws,
     };
-    this.users.set(this.userIndex, storedUser);
+    this.users.set(ws, storedUser);
     this.userIndex++;
     return storedUser;
+  }
+
+  createRoom(user: StoredUserData) {
+    this.rooms.set(this.roomsIndex, {
+      roomId: this.roomsIndex,
+      roomUsers: [{ name: user.name, index: user.index }],
+    });
+  }
+
+  getUser(ws: WebSocket) {
+    return this.users.get(ws);
   }
 
   getUsers() {

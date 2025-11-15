@@ -1,28 +1,11 @@
 import type WebSocket from "ws";
-import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
-import { MESSAGE_TYPE } from "../../constants/constants.js";
+import { database } from "../../db/database.js";
+import { sendUpdateRoomMessage } from "../../utils/sendMessage/sendUpdateRoomMessage.js";
 
 export function handleCreateRoomMessage(ws: WebSocket) {
-  sendMessage({
-    type: MESSAGE_TYPE.add_user_to_room,
-    data: {
-      indexRoom: 1,
-    },
-    ws,
-  });
-  sendMessage({
-    type: MESSAGE_TYPE.update_room,
-    data: [
-      {
-        roomId: 1,
-        roomUsers: [
-          {
-            name: "aaaaa",
-            index: 0,
-          },
-        ],
-      },
-    ],
-    ws,
-  });
+  const user = database.getUser(ws);
+  if (!user) return;
+  database.createRoom(user);
+
+  sendUpdateRoomMessage();
 }
