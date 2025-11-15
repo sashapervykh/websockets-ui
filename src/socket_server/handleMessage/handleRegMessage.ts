@@ -1,6 +1,6 @@
 import type WebSocket from "ws";
 import type { MessageWithCheckedType } from "../../model/message.js";
-import { getTypedRegMessage } from "../../utils/getTypedRegMessage.js";
+import { getTypedRegMessage } from "../../utils/getTypedMessage/getTypedRegMessage.js";
 import { database } from "../../db/database.js";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
 import { sendMessage } from "../../utils/sendMessage/sendMessage.js";

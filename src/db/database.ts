@@ -21,7 +21,7 @@ interface RoomData {
 class Database {
   users = new Map<WebSocket, StoredUserData>();
   rooms = new Map<number, RoomData>();
-  games = new Map();
+  games = new Map<number, unknown[]>();
   userIndex = 0;
   roomsIndex = 0;
   gameIndex = 0;
@@ -38,10 +38,10 @@ class Database {
     return storedUser;
   }
 
-  addUserToGame(userID: number, idGame: number) {
+  addUserToGame(user: StoredUserData, ships: string, idGame: number) {
     const game = this.games.get(idGame);
     if (!game) return;
-    game.push({ userId: userID });
+    game.push({ ...user, ships: ships });
   }
 
   addUserToRoom(user: StoredUserData, indexRoom: number) {
@@ -61,6 +61,10 @@ class Database {
   createGame() {
     this.games.set(this.gameIndex, []);
     return this.gameIndex++;
+  }
+
+  getGame(idGame: number) {
+    return this.games.get(idGame);
   }
 
   getUser(ws: WebSocket) {

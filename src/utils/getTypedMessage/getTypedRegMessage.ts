@@ -1,10 +1,10 @@
-import { MESSAGE_TYPE } from "../constants/constants.js";
-import type { MessageWithCheckedType } from "../model/message.js";
+import { MESSAGE_TYPE } from "../../constants/constants.js";
+import type { MessageWithCheckedType } from "../../model/message.js";
 
-export function getTypedAddUserMessage(message: MessageWithCheckedType) {
-  if (message["type"] !== MESSAGE_TYPE.add_user_to_room) {
+export function getTypedRegMessage(message: MessageWithCheckedType) {
+  if (message["type"] !== MESSAGE_TYPE.reg) {
     throw new Error(
-      `Property message has type ${message.type}, not type add_user_to_room as expected!`
+      `Property message has type ${message.type}, not type reg as expected!`
     );
   }
   if (!("data" in message)) {
@@ -18,14 +18,18 @@ export function getTypedAddUserMessage(message: MessageWithCheckedType) {
     throw new Error("Data property of received message is not stringified!");
   }
 
-  const data: unknown = JSON.parse(message["data"]);
+  const data = JSON.parse(message["data"]);
 
   if (
     !(
       typeof data === "object" &&
       data &&
-      "indexRoom" in data &&
-      typeof data["indexRoom"] === "number"
+      "name" in data &&
+      "password" in data &&
+      data["name"] &&
+      data["password"] &&
+      typeof data["name"] === "string" &&
+      typeof data["password"] === "string"
     )
   ) {
     throw new Error("Data property has the wrong type!");
@@ -36,7 +40,7 @@ export function getTypedAddUserMessage(message: MessageWithCheckedType) {
 
   return {
     type: message.type,
-    data: { indexRoom: data.indexRoom },
+    data: { name: data.name, password: data.password },
     id: message.id,
   };
 }

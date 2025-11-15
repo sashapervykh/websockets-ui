@@ -6,4 +6,5 @@ export const MESSAGE_TYPE = {
   update_winners: "update_winners",
   create_game: "create_game",
   add_ships: "add_ships",
+  start_game: "start_game",
 };

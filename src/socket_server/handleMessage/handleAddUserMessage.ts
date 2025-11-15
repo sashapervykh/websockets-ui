@@ -1,6 +1,6 @@
 import type WebSocket from "ws";
 import type { MessageWithCheckedType } from "../../model/message.js";
-import { getTypedAddUserMessage } from "../../utils/getTypedAddUserMessage.js";
+import { getTypedAddUserMessage } from "../../utils/getTypedMessage/getTypedAddUserMessage.js";
 import { database } from "../../db/database.js";
 import { sendUpdateRoomMessage } from "../../utils/sendMessage/sendUpdateRoomMessage.js";
 import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
@@ -20,7 +20,6 @@ export function handleAddUserMessage(
     sendUpdateRoomMessage();
     const idGame = database.createGame();
     for (const roomUser of roomUsers) {
-      database.addUserToGame(roomUser.index, idGame);
       sendMessage({
         type: MESSAGE_TYPE.create_game,
         data: { idGame: idGame, idPlayer: roomUser.index },
