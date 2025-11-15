@@ -11,7 +11,6 @@ export function startWebSocketServer() {
 
     ws.on("message", function message(data) {
       const message = JSON.parse(data.toString());
-      console.log(message);
       handleMessage(message, ws);
     });
   });
