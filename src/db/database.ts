@@ -33,12 +33,24 @@ class Database {
   gameIndex = 0;
 
   addUser(user: UserData, ws: WebSocket) {
+    const existingUser = this.users.find(
+      (storedUser) => storedUser.name === user.name
+    );
+
+    if (existingUser) {
+      if (existingUser.password !== user.password)
+        throw new Error("Wrong password received!");
+      existingUser.ws = ws;
+      return existingUser;
+    }
+
     const storedUser = {
       ...user,
       index: this.userIndex,
       wins: 0,
       ws,
     };
+
     this.users.push(storedUser);
     this.userIndex++;
     return storedUser;
