@@ -29,7 +29,7 @@ export function handleMessage(message: unknown, ws: WebSocket) {
       break;
     }
     case MESSAGE_TYPE.attack: {
-      handleAttackMessage(typedMessage, ws);
+      handleAttackMessage(typedMessage);
       break;
     }
     default: {
