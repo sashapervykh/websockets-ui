@@ -13,7 +13,10 @@ export function handleRegMessage(
 ) {
   try {
     const typedMessage = getTypedRegMessage(message);
-    const storedUser = database.addUser({ name: typedMessage.data.name }, ws);
+    const storedUser = database.addUser(
+      { name: typedMessage.data.name, password: typedMessage.data.password },
+      ws
+    );
     const data = {
       name: storedUser.name,
       index: storedUser.index,

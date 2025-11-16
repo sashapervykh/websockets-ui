@@ -8,8 +8,12 @@ import { database } from "../../db/database.js";
 import { sendAttackMessage } from "../../utils/sendMessage/sendAttackMessage.js";
 import { MESSAGE_TYPE } from "../../constants/constants.js";
 import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
+import { sendUpdateWinnersMessage } from "../../utils/sendMessage/sendUpdateWinnersMessage.js";
 
-export function handleAttackMessage(message: MessageWithCheckedType) {
+export function handleAttackMessage(
+  message: MessageWithCheckedType,
+  ws: WebSocket
+) {
   const { x, y, gameId, indexPlayer } = getTypedAttackMessage(message).data;
   const game = database.getGame(gameId);
   if (!game) return;
@@ -59,6 +63,10 @@ export function handleAttackMessage(message: MessageWithCheckedType) {
           data: { winPlayer: indexPlayer },
           ws: user.ws,
         });
+        database.deleteGame(gameId);
+        database.updateWinners(ws);
+        console.log(database.getUser(ws));
+        sendUpdateWinnersMessage();
       }
     }
   }

@@ -7,7 +7,7 @@ export function sendUpdateRoomMessage() {
   const roomsData = database.getRooms();
 
   for (const user of users) {
-    const userData = user[1];
+    const userData = user;
     sendMessage({
       type: MESSAGE_TYPE.update_room,
       data: roomsData,

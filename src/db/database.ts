@@ -4,16 +4,16 @@ import { createDbShipData } from "../utils/createDbShipData.js";
 
 interface UserData {
   name: string;
+  password: string;
 }
 
 interface StoredUserData {
   name: string;
+  password: string;
   index: number;
   wins: number;
   ws: WebSocket;
 }
-
-type WinsUserData = Omit<StoredUserData, "index" | "ws">;
 
 interface RoomData {
   roomId: number;
@@ -25,7 +25,7 @@ type GameUserData = StoredUserData & { shipsReceived: ShipMessage[] } & {
 };
 
 class Database {
-  users = new Map<WebSocket, StoredUserData>();
+  users: StoredUserData[] = [];
   rooms = new Map<number, RoomData>();
   games = new Map<number, GameUserData[]>();
   userIndex = 0;
@@ -39,7 +39,7 @@ class Database {
       wins: 0,
       ws,
     };
-    this.users.set(ws, storedUser);
+    this.users.push(storedUser);
     this.userIndex++;
     return storedUser;
   }
@@ -70,12 +70,16 @@ class Database {
     return this.gameIndex++;
   }
 
+  deleteGame(gameId: number) {
+    this.games.delete(gameId);
+  }
+
   getGame(idGame: number) {
     return this.games.get(idGame);
   }
 
   getUser(ws: WebSocket) {
-    return this.users.get(ws);
+    return this.users.find((elem) => elem.ws === ws);
   }
 
   getUsers() {
@@ -104,6 +108,12 @@ class Database {
       name: elem.name,
       wins: elem.wins,
     }));
+  }
+
+  updateWinners(ws: WebSocket) {
+    const user = this.getUser(ws);
+    if (!user) return;
+    user.wins++;
   }
 }
 

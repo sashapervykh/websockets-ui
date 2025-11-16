@@ -10,7 +10,6 @@ import type WebSocket from "ws";
 
 export function handleMessage(message: unknown, ws: WebSocket) {
   const typedMessage = checkMessageType(message);
-  console.log(message);
 
   switch (typedMessage.type) {
     case MESSAGE_TYPE.reg: {
@@ -30,7 +29,7 @@ export function handleMessage(message: unknown, ws: WebSocket) {
       break;
     }
     case MESSAGE_TYPE.attack: {
-      handleAttackMessage(typedMessage);
+      handleAttackMessage(typedMessage, ws);
       break;
     }
     case MESSAGE_TYPE.randomAttack: {
