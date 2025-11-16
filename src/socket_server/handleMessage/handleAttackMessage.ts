@@ -19,7 +19,7 @@ export function handleAttackMessage(
   const enemy = game.filter((elem) => elem.index !== indexPlayer)[0];
 
   if (!enemy) return;
-
+  let cellsToMissWhenKilled: { x: number; y: number }[] | undefined;
   const attackData = {
     position: { x, y },
     currentPlayer: indexPlayer,
@@ -31,10 +31,31 @@ export function handleAttackMessage(
       ship.shot++;
       ship.killed = ship.length - ship.shot === 0 ? true : false;
       attackData.status = ship.killed ? "killed" : "shot";
+      if (ship.killed) cellsToMissWhenKilled = ship.surrounding;
       break;
     }
   }
   sendAttackMessage(gameId, attackData);
+  if (cellsToMissWhenKilled) {
+    for (const cell of cellsToMissWhenKilled) {
+      const missedAttackData = {
+        position: { x: cell.x, y: cell.y },
+        currentPlayer: indexPlayer,
+        status: "miss",
+      };
+      sendAttackMessage(gameId, missedAttackData);
+    }
+  }
+
+  if (attackData.status === "killed") {
+    for (const user of game) {
+      sendMessage({
+        type: MESSAGE_TYPE.attack,
+        data: attackData,
+        ws: user.ws,
+      });
+    }
+  }
 
   const queue = attackData.status === "miss" ? enemy.index : indexPlayer;
 

@@ -21,4 +21,5 @@ export interface ShipStored {
   length: number;
   shot: number;
   killed: boolean;
+  surrounding: { x: number; y: number }[];
 }

@@ -11,7 +11,7 @@ interface AttackData {
 export function sendAttackMessage(gameId: number, attackData: AttackData) {
   const gameUsers = database.getGame(gameId);
   if (!gameUsers) return;
-  console.log(attackData);
+
   for (const user of gameUsers) {
     sendMessage({
       type: MESSAGE_TYPE.attack,
