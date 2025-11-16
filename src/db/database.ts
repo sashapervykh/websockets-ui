@@ -40,6 +40,7 @@ class Database {
     if (existingUser) {
       if (existingUser.password !== user.password)
         throw new Error("Wrong password received!");
+      existingUser.ws.close();
       existingUser.ws = ws;
       return existingUser;
     }

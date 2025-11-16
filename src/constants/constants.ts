@@ -11,4 +11,5 @@ export const MESSAGE_TYPE = {
   attack: "attack",
   finish: "finish",
   randomAttack: "randomAttack",
+  single_play: "single_play",
 };
