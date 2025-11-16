@@ -6,6 +6,8 @@ import type {
 import { getTypedAttackMessage } from "../../utils/getTypedMessage/getTypedAttackMessage.js";
 import { database } from "../../db/database.js";
 import { sendAttackMessage } from "../../utils/sendMessage/sendAttackMessage.js";
+import { MESSAGE_TYPE } from "../../constants/constants.js";
+import { sendMessage } from "../../utils/sendMessage/sendMessage.js";
 
 export function handleAttackMessage(
   message: MessageWithCheckedType,
@@ -14,15 +16,16 @@ export function handleAttackMessage(
   const { x, y, gameId, indexPlayer } = getTypedAttackMessage(message).data;
   const game = database.getGame(gameId);
   if (!game) return;
-  const user = game.filter((elem) => elem.index !== indexPlayer)[0];
-  if (!user) return;
+  const enemy = game.filter((elem) => elem.index !== indexPlayer)[0];
+
+  if (!enemy) return;
 
   const attackData = {
     position: { x, y },
     currentPlayer: indexPlayer,
     status: "miss",
   };
-  for (const ship of user.shipsStored) {
+  for (const ship of enemy.shipsStored) {
     const isShot = checkShot(x, y, ship);
     if (isShot) {
       ship.shot++;
@@ -32,6 +35,16 @@ export function handleAttackMessage(
     }
   }
   sendAttackMessage(gameId, attackData);
+
+  const queue = attackData.status === "miss" ? enemy.index : indexPlayer;
+
+  for (const user of game) {
+    sendMessage({
+      type: MESSAGE_TYPE.turn,
+      data: { currentPlayer: queue },
+      ws: user.ws,
+    });
+  }
 }
 
 function checkShot(x: number, y: number, ship: ShipStored) {

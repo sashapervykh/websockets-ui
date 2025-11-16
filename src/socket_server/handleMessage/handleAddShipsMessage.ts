@@ -21,13 +21,14 @@ export function handleAddShipsMessage(
       sendMessage({
         type: MESSAGE_TYPE.start_game,
         data: {
-          ships: gameUser.shipReceived,
+          ships: gameUser.shipsReceived,
           currentPlayerIndex: gameUser.index,
         },
         ws: gameUser.ws,
       });
     }
     for (const gameUser of gameUsers) {
+      if (!gameUsers[nextUser]) return;
       sendMessage({
         type: MESSAGE_TYPE.turn,
         data: { currentPlayer: gameUsers[nextUser].index },
