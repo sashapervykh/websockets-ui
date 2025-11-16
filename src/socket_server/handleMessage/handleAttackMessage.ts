@@ -55,6 +55,15 @@ export function handleAttackMessage(
         ws: user.ws,
       });
     }
+    for (const user of game) {
+      if (enemy.shipsStored.every((elem) => elem.killed)) {
+        sendMessage({
+          type: MESSAGE_TYPE.finish,
+          data: { winPlayer: indexPlayer },
+          ws: user.ws,
+        });
+      }
+    }
   }
 
   const queue = attackData.status === "miss" ? enemy.index : indexPlayer;

@@ -9,4 +9,5 @@ export const MESSAGE_TYPE = {
   start_game: "start_game",
   turn: "turn",
   attack: "attack",
+  finish: "finish",
 };
