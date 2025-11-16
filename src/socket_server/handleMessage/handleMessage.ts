@@ -4,6 +4,7 @@ import { handleAddShipsMessage } from "./handleAddShipsMessage.js";
 import { handleAddUserMessage } from "./handleAddUserMessage.js";
 import { handleAttackMessage } from "./handleAttackMessage.js";
 import { handleCreateRoomMessage } from "./handleCreateRoomMessage.js";
+import { handleRandomAttack } from "./handleRandomAttack.js";
 import { handleRegMessage } from "./handleRegMessage.js";
 import type WebSocket from "ws";
 
@@ -30,6 +31,10 @@ export function handleMessage(message: unknown, ws: WebSocket) {
     }
     case MESSAGE_TYPE.attack: {
       handleAttackMessage(typedMessage);
+      break;
+    }
+    case MESSAGE_TYPE.randomAttack: {
+      handleRandomAttack(typedMessage);
       break;
     }
     default: {

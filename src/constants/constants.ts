@@ -10,4 +10,5 @@ export const MESSAGE_TYPE = {
   turn: "turn",
   attack: "attack",
   finish: "finish",
+  randomAttack: "randomAttack",
 };
